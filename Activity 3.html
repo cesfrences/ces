@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shawarma Delivery Order</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> <!-- For icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Lobster&display=swap" rel="stylesheet"> <!-- Added Google Fonts for enhanced fontstyle -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif; /* Modern font; now with Google Fonts link */
+            margin: 0;
+            padding: 0;
+            background-image: url('shawarma-bg.jpg'); /* Your shawarma-themed image */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Parallax effect */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5); /* Dark overlay for readability */
+            z-index: 1;
+        }
+        .form-container {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.8)); /* Gradient background */
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            z-index: 2;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1 {
+            text-align: center;
+            color: #d9534f; /* Shawarma-red theme */
+            margin-bottom: 20px;
+            font-size: 2em;
+            font-family: 'Lobster', cursive; /* Fancy fontstyle for title */
+        }
+        h1 i {
+            margin-right: 10px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+            font-family: 'Roboto', sans-serif; /* Consistent fontstyle */
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+            font-family: 'Roboto', sans-serif; /* Fontstyle for inputs */
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: #d9534f;
+            outline: none;
+        }
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            font-weight: normal;
+            margin: 0;
+            font-family: 'Roboto', sans-serif; /* Fontstyle for checkboxes */
+        }
+        .checkbox-group input {
+            margin-right: 8px;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #d9534f, #c9302c);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background 0.3s;
+            font-family: 'Roboto', sans-serif; /* Fontstyle for button */
+        }
+        button:hover {
+            background: linear-gradient(135deg, #c9302c, #a94442);
+        }
+        #total-price {
+            text-align: center;
+            font-size: 1.2em;
+            color: #d9534f;
+            margin-top: 10px;
+            font-family: 'Roboto', sans-serif; /* Fontstyle for total */
+        }
+        .boolean-group {
+            margin-bottom: 20px;
+        }
+        .boolean-group label {
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1><i class="fas fa-utensils"></i> Order Shawarma Delivery</h1>
+        <form id="order-form">
+            <div class="form-group">
+                <label for="name"><i class="fas fa-user"></i> Full Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="phone"><i class="fas fa-phone"></i> Phone Number:</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="address"><i class="fas fa-map-marker-alt"></i> Delivery Address:</label>
+                <textarea id="address" name="address" rows="3" required></textarea>
+            </div>
+            <!-- Added date field for delivery date -->
+            <div class="form-group">
+                <label for="delivery-date"><i class="fas fa-calendar-alt"></i> Delivery Date:</label>
+                <input type="date" id="delivery-date" name="delivery-date" required>
+            </div>
+            <div class="form-group">
+                <label for="shawarma-type"><i class="fas fa-drumstick-bite"></i> Shawarma Type:</label>
+                <select id="shawarma-type" name="shawarma-type" required>
+                    <option value="">Select Type</option>
+                    <option value="chicken" data-price="10">Chicken Shawarma - $10</option>
+                    <option value="beef" data-price="12">Beef Shawarma - $12</option>
+                    <option value="lamb" data-price="14">Lamb Shawarma - $14</option>
+                    <option value="veggie" data-price="8">Veggie Shawarma - $8</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="quantity"><i class="fas fa-sort-numeric-up"></i> Quantity:</label>
+                <input type="number" id="quantity" name="quantity" min="1" value="1" required>
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-plus-circle"></i> Extras:</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="extras" value="extra-sauce" data-price="1"> Extra Sauce (+$1)</label>
+                    <label><input type="checkbox" name="extras" value="fries" data-price="3"> Fries (+$3)</label>
+                    <label><input type="checkbox" name="extras" value="drink" data-price="2"> Drink (+$2)</label>
+                </div>
+            </div>
+            <!-- Added boolean field for terms agreement -->
+            <div class="boolean-group">
+                <label><input type="checkbox" id="agree-terms" name="agree-terms" required> I agree to the terms and conditions (boolean check).</label>
+            </div>
+            <div id="total-price">Total: $0</div>
+            <button type="submit"><i class="fas fa-shopping-cart"></i> Place Order</button>
+        </form>
+    </div>
+
+    <script>
+        // Basic price calculator
+        const form = document.getElementById('order-form');
+        const totalDisplay = document.getElementById('total-price');
+        const shawarmaSelect = document.getElementById('shawarma-type');
+        const quantityInput = document.getElementById('quantity');
+        const extrasCheckboxes = document.querySelectorAll('input[name="extras"]');
+        const agreeTerms = document.getElementById('agree-terms'); // Boolean field
+        const deliveryDateInput = document.getElementById('delivery-date'); // Date field
+
+        function calculateTotal() {
+            let total = 0;
+            const selectedOption = shawarmaSelect.options[shawarmaSelect.selectedIndex];
+            if (selectedOption.value) {
+                total += parseFloat(selectedOption.getAttribute('data-price')) * parseInt(quantityInput.value);
+            }
+            extrasCheckboxes.forEach(cb => {
+                if (cb.checked) {
+                    total += parseFloat(cb.getAttribute('data-price'));
+                }
+            });
+            totalDisplay.textContent = `Total: $${total.toFixed(2)}`;
+        }
+
+        shawarmaSelect.addEventListener('change', calculateTotal);
+        quantityInput.addEventListener('input', calculateTotal);
+        extrasCheckboxes.forEach(cb => cb.addEventListener('change', calculateTotal));
+
+        // Initial calculation
+        calculateTotal();
+
+        // Set minimum date to today for delivery date
+        const today = new Date().toISOString().split('T')[0];
+        deliveryDateInput.setAttribute('min', today);
+
+        // Form submission with alerts and conversion plan (confirmation dialog)
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Validation alerts
+            if (!form.name.value.trim()) {
+                alert('Please enter your full name.');
+                return;
+            }
+            if (!form.phone.value.trim()) {
+                alert('Please enter your phone number.');
+                return;
+            }
+            if (!form.address.value.trim()) {
+                alert('Please enter your delivery address.');
+                return;
+            }
+            if (!deliveryDateInput.value) {
+                alert('Please select a delivery date.');
+                return;
+            }
+            const selectedDate = new Date(deliveryDateInput.value);
+            const now = new Date();
+            if (selectedDate < now.setHours(0, 0, 0, 0)) {
+                alert('Delivery date cannot be in the past.');
+                return;
+            }
+            if (!shawarmaSelect.value) {
+                alert('Please select a shawarma type.');
+                return;
+            }
+            if (!agreeTerms.checked) {
+                alert('You must agree to the terms and conditions.');
+                return;
+            }
+            
+            // Conversion plan: Confirmation alert before submission
+            const confirmed = confirm(`Confirm your order?\nTotal: ${totalDisplay.textContent}\nName: ${form.name.value}\nAddress: ${form.address.value}\nDelivery Date: ${deliveryDateInput.value}\n\nClick OK to proceed.`);
+            if (confirmed) {
+                // Simulate submission (replace with real backend)
+                alert('Order submitted successfully! Thank you for your order. (Connect to backend for real processing)');
+                // Optional: Reset form or redirect to thank-you page
+                form.reset();
+                calculateTotal(); // Reset total
+            } else {
+                alert('Order cancelled.');
+            }
+        });
+    </script>
+</body>
+</html>
